@@ -1,0 +1,78 @@
+.layout {
+  padding: 20px 20px 6px;
+  width: 100%;
+  min-width: 1200px;
+  height: 100vh;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+
+  .layout-headers {
+    display: flex;
+    margin-bottom: 10px;
+    height: 60px;
+    line-height: 60px;
+
+    &-brand {
+      position: relative;
+      display: flex;
+      margin-right: 20px;
+      width: 300px;
+      font-family: '钉钉进步体 Regular';
+      font-size: 40px;
+
+      // &::after {
+      //   content: '';
+      //   position: absolute;
+      //   top: 50%;
+      //   right: 0;
+      //   transform: translate(-50%, -50%);
+      //   width: 1px;
+      //   height: 20px;
+      //   background: #000;
+      // }
+    }
+
+    .avatar {
+      position: absolute;
+      right: 20px;
+      top: 34px;
+      width: 40px;
+      height: 40px;
+    }
+
+  }
+
+  &-container {
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+
+    &-navs {
+      padding: 20px;
+      width: 260px;
+      min-width: 260px;
+      margin-right: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      overflow-y: auto;
+
+
+      :global {
+        .ant-menu-root.ant-menu-inline {
+          border-inline-end: none;
+        }
+      }
+    }
+
+    &-context {
+      padding: 20px;
+      flex: 6;
+      background-color: #fff;
+      border-radius: 10px;
+    }
+  }
+
+
+
+}
