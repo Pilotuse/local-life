@@ -5,6 +5,8 @@ import Barcode from '@/components/Barcode'
 import services from '@/services'
 import { useParams } from 'umi'
 import { getArgs } from '@/utils/getArgs'
+
+
 import styles from './index.less'
 
 const CrossEnd = () => {
@@ -78,22 +80,20 @@ const CrossEnd = () => {
             {taskInfo?.lifespan}
           </Descriptions.Item>
         </Descriptions>
-        <ProForm
-          submitter={false}
-          onFinish={async (values) => console.log(values)}
-        >
+        <ProForm submitter={false} >
           <ProFormUploadButton
+            action={`/api/file/uploadDrugImage/${taskInfo?.uploadId}`}
             extra={
               <div style={{ marginTop: 12 }}>
                 <div style={{ fontSize: 12 }}>仅支持上传一张图片，上传完成后当前链接立即失效</div>
                 <span style={{ fontSize: 12 }}>支持微信、抖音等扫码上传</span>
               </div>
             }
-            name="file"
+            name={taskInfo?.uploadId}
             title="上传支付凭证"
             width="lg"
             fieldProps={{
-              maxCount: 1
+              maxCount: 1,
             }}
           />
         </ProForm>

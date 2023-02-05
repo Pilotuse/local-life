@@ -20,12 +20,24 @@ const Login = () => {
   const onFinish = async (params: onFinishProps) => {
     const result = await service.UserController.login(params)
 
-    if (!result?.success) {
+    if (!result?.success && result?.data?.state === 3) {
       message.error(`${result?.msg}`)
       // 跳转至强制重置密码
       history.push(result?.data?.resetUrl)
       return;
     }
+    if (!result?.success && result?.data?.state === 2) {
+      message.error(`${result?.msg}`)
+      // 跳转至强制重置密码
+      history.push('/register-confirm', { username: params.username })
+      return;
+    }
+    if (!result?.success) {
+      message.error(`${result?.msg}`)
+      return;
+    }
+
+
     // 将token 写入 session 根据autoLogin 来判断存在哪里
     const setFC = params?.autoLogin ? localStorage : sessionStorage;
     setFC.setItem("POST_TOKEN", result?.data.token)
@@ -52,7 +64,7 @@ const Login = () => {
       <LoginFormPage
         backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
         logo="https://github.githubassets.com/images/modules/logos_page/Octocat.png"
-        title="智慧E家"
+        title="家"
         subTitle="专业化的家庭中台"
         onFinish={onFinish}
       >

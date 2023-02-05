@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Outlet, useLocation, history, useModel } from 'umi';
 import { Menu, MenuProps, Tag, Badge, Space, message, Avatar } from 'antd'
 import { MENU_TARGET_BRAND, MENU_ROUTER } from '@/constants'
-import services from '@/services'
 import styles from './index.less';
 
 const Layout = () => {
   const location = useLocation();
-  const { setUser } = useModel('user')
-  const [userInfo, setUserInfo] = useState<User>()
+  const { user: userInfo } = useModel('user')
   const brand = MENU_TARGET_BRAND[location.pathname] as any || "";
   const defaultSelectedKeys = location.pathname?.substring(1).toUpperCase();
   const defaultOpenKeys = MENU_ROUTER?.filter((el: any) => {
@@ -21,13 +19,6 @@ const Layout = () => {
     history.push(path)
   };
 
-  const queryUserInfos = async () => {
-    const result = await services.UserController.queryUserInfos()
-    if (result?.success) {
-      setUserInfo(result?.data)
-      setUser(result?.data)
-    }
-  }
 
   useEffect(() => {
     const POST_TOKEN_LOCAL = localStorage.getItem("POST_TOKEN")
@@ -38,9 +29,6 @@ const Layout = () => {
       history.push('/login')
       return;
     }
-
-    // 查询用户信息
-    queryUserInfos()
   }, [localStorage.getItem("POST_TOKEN"), sessionStorage.getItem("POST_TOKEN")])
 
 
@@ -49,7 +37,7 @@ const Layout = () => {
     <div className={styles.layout}>
       <div className={styles["layout-headers"]}>
         <div className={styles["layout-headers-brand"]}>
-          家
+          Local Life Pro
         </div>
         <Space size={1}>
           <Tag color="default"> {brand} </Tag>

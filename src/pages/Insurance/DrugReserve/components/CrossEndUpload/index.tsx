@@ -43,12 +43,30 @@ const CrossEndUpload = (props: CrossEndUploadProps) => {
   const [form] = Form.useForm();
   const [taskInfo, setTaskInfo] = useState<IFile.GenerateQrCodeResponse["data"]>()
 
+  const queryUploadState = (task: any) => {
+    if (userInfo?.username && task?.uploadId) {
+      const intervalid = setInterval(async () => {
+        const result = await services.UploadController.queryProcessTask({
+          username: userInfo.username,
+          uploadId: task?.uploadId
+        })
+        setTaskInfo(result?.data)
+        if (result?.success && result?.data?.state === 3) {
+          clearInterval(intervalid)
+        }
+      }, 2000)
+    }
+  }
+
+
   const onClick = async (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
+
     const result = await services.UploadController.generateQrCode({ taskName, drugBarcode, task_desc: lable })
     if (result?.success) {
       setTaskInfo(result.data)
+      queryUploadState(result.data)
     }
   }
 

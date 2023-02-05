@@ -28,13 +28,25 @@ export async function queryProcessTask(body?: IFile.QueryProcessTask, options?: 
 
 
 /** 图片上传接口 */
-
 export async function uploadImageService(_body?: IFile.GenerateQrCode, options?: { [key: string]: any }) {
   return request<IFile.GenerateQrCodeResponse>('/api/file/uploadImage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    ...(options || {}),
+  });
+}
+
+
+/** 药品跨端上传图片接口 */
+export async function uploadDrugImageService(body?: IFile.GenerateQrCode, options?: { [key: string]: any }) {
+  return request<IFile.GenerateQrCodeResponse>('/api/file/uploadDrugImage/:id', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    data: body,
     ...(options || {}),
   });
 }

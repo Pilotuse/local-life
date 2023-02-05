@@ -21,7 +21,8 @@ import {
   SafetyCertificateOutlined,
   FundProjectionScreenOutlined,
   OneToOneOutlined,
-  ControlOutlined
+  ControlOutlined,
+  TagsOutlined
 } from '@ant-design/icons';
 
 export const MENU_TARGET_BRAND = {
@@ -29,7 +30,9 @@ export const MENU_TARGET_BRAND = {
   '/home': '控制台主页',
   '/insurance': '疾病预防 - 药品和医保',
   '/crawl_task': '疾病预防 - 数据爬取',
-  '/settings': '个人设置'
+  '/settings': '个人设置',
+  '/account_safe': '账号与安全',
+  '/plugin_market': '插件市场'
 } as any
 
 export const MENU_ROUTER = [
@@ -82,7 +85,8 @@ export const MENU_ROUTER = [
     icon: <SettingOutlined />,
     key: 'SETTINGS',
     children: [
-      { label: '账号与安全', icon: <SafetyCertificateOutlined />, key: 'INSURANCE', },
+      { label: '账号与安全', icon: <SafetyCertificateOutlined />, key: 'ACCOUNT_SAFE', },
+      { label: '插件市场', icon: <TagsOutlined />, key: 'PLUGIN_MARKET', },
       { label: '家庭环境设置中心', icon: <OneToOneOutlined />, key: 'FALL_ILL', },
       // 家庭圈管理员权限 涉及数据爬取
       { label: '家庭圈设置', icon: <ControlOutlined />, key: 'COVID-19', },
@@ -93,7 +97,7 @@ export const MENU_ROUTER = [
 /**
  * 药品类型
  */
-export const DRUG_TYPE =   [
+export const DRUG_TYPE = [
   { value: 'OTC', label: '非处方药' },
   { value: 'prescription', label: '处方药' },
   { value: 'health_products', label: '保健品' },
@@ -129,7 +133,6 @@ export const DRUG_VALUEENUM = {
   available: {
     text: '可用',
     status: 'available',
-    disabled: true,
   },
   procurement: {
     text: '采购中',

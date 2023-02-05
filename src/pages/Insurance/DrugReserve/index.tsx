@@ -3,7 +3,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { Button, Badge, message, Tooltip } from 'antd';
 import AddDrugs from './components/AddDrugs'
 import services from '@/services'
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Barcode from '@/components/Barcode'
 import { DRUG_VALUEENUM, DRUG_TYPE } from '@/constants'
 import { TabletOutlined } from '@ant-design/icons';
@@ -28,6 +28,13 @@ type GithubIssueItem = {
 };
 
 const columns: ProColumns<GithubIssueItem>[] = [
+  {
+    title: 'id',
+    key: 'id',
+    dataIndex: 'id',
+    hideInSearch: true,
+    hideInTable: true
+  },
   {
     title: '药品名称',
     dataIndex: 'drugName',
@@ -145,33 +152,36 @@ const columns: ProColumns<GithubIssueItem>[] = [
     title: '操作',
     valueType: 'option',
     key: 'option',
-    render: (text: any, record: any, _: any, action: any) => [
-      <a
-        key="editable"
-        onClick={() => {
-          action?.startEditable?.(record.id);
-        }}
-      >
-        编辑
-      </a>,
-      <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
-        查看
-      </a>,
-      <TableDropdown
-        key="actionGroup"
-        onSelect={() => action?.reload()}
-        menus={[
-          { key: 'copy', name: '复制' },
-          { key: 'delete', name: '删除' },
-          { key: 'print', name: '打印' },
-        ]}
-      />,
-    ],
+    render: (text: any, record: any, _: any, action: any) => {
+      return [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.id);
+          }}
+        >
+          编辑
+        </a>,
+        <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
+          查看
+        </a>,
+        <TableDropdown
+          key="actionGroup"
+          onSelect={() => action?.reload()}
+          menus={[
+            { key: 'copy', name: '复制' },
+            { key: 'delete', name: '删除' },
+            { key: 'print', name: '打印' },
+          ]}
+        />,
+      ]
+    },
   },
 ];
 
 const DrugReserve = () => {
   const actionRef = useRef<ActionType>();
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
 
   const onRequest = async (params: any) => {
     const result = await services.DrugController.QueryDrugs(params)
@@ -196,6 +206,14 @@ const DrugReserve = () => {
       request={onRequest}
       editable={{
         type: 'multiple',
+        editableKeys,
+        onSave: async (rowKey, data, row) => {
+          // 比较两个不一样的地方，然后进行变更
+
+          console.log(rowKey, data, row);
+   
+        },
+        onChange: setEditableRowKeys,
       }}
       className={styles["drug-reserve-container"]}
       columnsState={{
@@ -207,7 +225,7 @@ const DrugReserve = () => {
       search={{
         labelWidth: 'auto',
       }}
-      options={false}
+      // options={false}
       form={{
         // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
         syncToUrl: (values: any, type: any) => {
